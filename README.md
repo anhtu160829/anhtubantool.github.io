@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +8,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{
     min-height:100vh;
-    font-family:Arial;
+    font-family:Arial,Helvetica,sans-serif;
     background:linear-gradient(270deg,red,orange,yellow,green,cyan,blue,violet);
     background-size:1600% 1600%;
     animation:rainbow 15s ease infinite;
@@ -21,31 +22,46 @@ body{
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 }
-.main{
-    width:540px;
-    background:rgba(0,0,0,.7);
+.app{
+    width:100%;
+    max-width:520px;
+    background:rgba(0,0,0,.75);
     border-radius:22px;
-    padding:24px;
+    padding:20px;
+    border:2px solid #fff;
 }
 h1{
     text-align:center;
-    font-size:34px;
     margin-bottom:16px;
-    text-shadow:-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff,2px 2px 0 #fff,0 0 14px gold;
+    font-size:34px;
+    text-shadow:
+        -2px -2px 0 #fff,
+         2px -2px 0 #fff,
+        -2px  2px 0 #fff,
+         2px  2px 0 #fff,
+         0 0 15px gold;
 }
-.tabs{display:flex;gap:10px;margin-bottom:16px}
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:16px;
+}
 .tab{
     flex:1;
-    padding:12px;
     text-align:center;
+    padding:10px;
     border-radius:14px;
     border:2px solid #fff;
     cursor:pointer;
     font-weight:bold;
 }
-.tab.active{background:rgba(255,255,255,.25)}
+.tab.active{
+    background:rgba(255,255,255,.25);
+}
 .content{display:none}
 .content.active{display:block}
+
+/* common box */
 .box{
     background:#020617;
     border-radius:16px;
@@ -54,12 +70,24 @@ h1{
 input,button{
     width:100%;
     padding:12px;
-    border-radius:8px;
+    border-radius:10px;
     border:none;
     margin-top:8px;
+    font-size:15px;
 }
-button{background:#2563eb;color:#fff;font-weight:bold;cursor:pointer}
-button.reset{background:#b91c1c;margin-top:6px}
+button{
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+pre{
+    background:#0b0e1d;
+    padding:12px;
+    border-radius:10px;
+    margin-top:10px;
+    white-space:pre-wrap;
+}
 .row{
     display:flex;
     justify-content:space-between;
@@ -67,60 +95,51 @@ button.reset{background:#b91c1c;margin-top:6px}
     border-bottom:1px solid rgba(255,255,255,.15);
 }
 .row:last-child{border-bottom:none}
-.history{
-    margin-top:12px;
-    background:#020617;
-    padding:10px;
-    border-radius:10px;
-    font-size:13px;
-}
-.history-item{
-    border-bottom:1px dashed #334155;
-    padding:4px 0;
-}
+.timer{text-align:center;margin-bottom:10px;color:#ffd9a3}
 </style>
 </head>
 
 <body>
-<div class="main">
+<div class="app">
 
 <h1>anhtubantool</h1>
 
 <div class="tabs">
     <div class="tab active" onclick="openTab('sicbo',this)">🎲 SICBO</div>
     <div class="tab" onclick="openTab('sunwin',this)">🔥 SUNWIN</div>
+    <div class="tab" onclick="openTab('md5',this)">🔐 CHẴN / LẺ</div>
 </div>
 
-<!-- ===== SICBO ===== -->
+<!-- ================= SICBO ================= -->
 <div id="sicbo" class="content active">
 <div class="box">
-<h3>🎲 SICBO AI</h3>
-<input id="md5Input" placeholder="Nhập MD5 32 ký tự">
+<h3 style="text-align:center">🎲 SICBO AI – MD5</h3>
+<input id="md5Input" placeholder="Nhập MD5 32 ký tự hex">
 <button onclick="analyzeSicbo()">PHÂN TÍCH</button>
-<button class="reset" onclick="resetSicbo()">RESET LỊCH SỬ</button>
-<div id="sicboOut"></div>
-<div class="history">
-<b>📜 Lịch sử SICBO</b>
-<div id="sicboHistory"></div>
-</div>
+<pre id="sicboOut"></pre>
 </div>
 </div>
 
-<!-- ===== SUNWIN ===== -->
+<!-- ================= SUNWIN ================= -->
 <div id="sunwin" class="content">
 <div class="box">
-<h3>🔥 SUNWIN AI</h3>
-<p style="text-align:center">⏳ <span id="countdown">60</span>s</p>
+<h3 style="text-align:center">🔥 SUNWIN AI</h3>
+<div class="timer">⏳ Làm mới sau <span id="countdown">60</span>s</div>
 <div class="row"><span>Phiên</span><span id="phien">--</span></div>
 <div class="row"><span>Xúc xắc</span><span id="xx">--</span></div>
 <div class="row"><span>Tổng</span><span id="tong">--</span></div>
 <div class="row"><span>Kết quả</span><span id="ketqua">--</span></div>
 <div class="row"><span>Dự đoán</span><span id="dudoan">--</span></div>
-<button class="reset" onclick="resetSun()">RESET LỊCH SỬ</button>
-<div class="history">
-<b>📜 Lịch sử SUNWIN</b>
-<div id="sunHistory"></div>
 </div>
+</div>
+
+<!-- ================= MD5 CHẴN LẺ ================= -->
+<div id="md5" class="content">
+<div class="box">
+<h3 style="text-align:center">🔐 MD5 → CHẴN / LẺ</h3>
+<input id="md5CL" placeholder="Nhập MD5 32 ký tự">
+<button onclick="analyzeCL()">PHÂN TÍCH</button>
+<div id="outCL"></div>
 </div>
 </div>
 
@@ -134,32 +153,22 @@ function openTab(id,e){
     document.getElementById(id).classList.add('active');
 }
 
-/* ===== SICBO ===== */
+/* ========= SICBO (giữ logic gốc) ========= */
+function seededRandom(seed){let x=Math.sin(seed++)*10000;return x-Math.floor(x);}
 function analyzeSicbo(){
     const md5=md5Input.value.trim().toLowerCase();
-    if(!/^[0-9a-f]{32}$/.test(md5)){sicboOut.innerHTML="❌ MD5 lỗi";return;}
+    if(!/^[0-9a-f]{32}$/.test(md5)){sicboOut.textContent="❌ MD5 không hợp lệ";return;}
     let s=parseInt(md5.slice(0,16),16);
-    let r=()=>1+Math.floor((Math.sin(s++)*10000%1)*6);
-    let d1=r(),d2=r(),d3=r();
+    let d1=Math.floor(seededRandom(s++)*6)+1;
+    let d2=Math.floor(seededRandom(s++)*6)+1;
+    let d3=Math.floor(seededRandom(s++)*6)+1;
     let total=d1+d2+d3;
-    sicboOut.innerHTML=`🎲 ${d1}-${d2}-${d3} | Tổng: <b>${total}</b>`;
-    let h=JSON.parse(localStorage.getItem("sicbo_h")||"[]");
-    h.unshift(`🎲 ${d1}-${d2}-${d3} | ${total}`);
-    if(h.length>10)h.pop();
-    localStorage.setItem("sicbo_h",JSON.stringify(h));
-    renderSicbo();
+    sicboOut.textContent=
+`🎲 ${d1}-${d2}-${d3}
+TỔNG: ${total}`;
 }
-function renderSicbo(){
-    sicboHistory.innerHTML=(JSON.parse(localStorage.getItem("sicbo_h")||"[]"))
-        .map(i=>`<div class="history-item">${i}</div>`).join("");
-}
-function resetSicbo(){
-    localStorage.removeItem("sicbo_h");
-    renderSicbo();
-}
-renderSicbo();
 
-/* ===== SUNWIN ===== */
+/* ========= SUNWIN ========= */
 let cd=60;
 async function loadSun(){
     try{
@@ -170,24 +179,23 @@ async function loadSun(){
         tong.textContent=d.tong;
         ketqua.textContent=d.ket_qua;
         dudoan.textContent=d.du_doan;
+    }catch{ketqua.textContent="Lỗi API";}
+}
+setInterval(()=>{
+    countdown.textContent=cd--;
+    if(cd<0){cd=60;loadSun();}
+},1000);
+loadSun();
 
-        let h=JSON.parse(localStorage.getItem("sun_h")||"[]");
-        h.unshift(`Phiên ${d.phien} | Tổng ${d.tong} | ${d.ket_qua} | ${d.du_doan}`);
-        if(h.length>10)h.pop();
-        localStorage.setItem("sun_h",JSON.stringify(h));
-        renderSun();
-    }catch{}
+/* ========= CHẴN LẺ ========= */
+function analyzeCL(){
+    const md5=md5CL.value.trim().toLowerCase();
+    if(!/^[0-9a-f]{32}$/.test(md5)){outCL.innerHTML="❌ MD5 không hợp lệ";return;}
+    const seed=parseInt(md5.slice(0,8),16);
+    const r=seededRandom(seed);
+    const res=r>0.5?"LẺ":"CHẴN";
+    outCL.innerHTML=`<h3 style="text-align:center">${res}</h3>`;
 }
-function renderSun(){
-    sunHistory.innerHTML=(JSON.parse(localStorage.getItem("sun_h")||"[]"))
-        .map(i=>`<div class="history-item">${i}</div>`).join("");
-}
-function resetSun(){
-    localStorage.removeItem("sun_h");
-    renderSun();
-}
-setInterval(()=>{countdown.textContent=cd--;if(cd<0){cd=60;loadSun()}},1000);
-loadSun();renderSun();
 </script>
 </body>
 </html>
